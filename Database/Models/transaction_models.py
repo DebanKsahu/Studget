@@ -1,5 +1,5 @@
 from datetime import date, datetime, timezone
-from typing import Self
+from typing import Any, Dict, Self
 from pydantic import model_validator
 from sqlmodel import SQLModel, Field, Column, BigInteger, ForeignKey
 
@@ -26,3 +26,7 @@ class TransactionIn(SQLModel):
         if (self.transaction_category not in expected_types):
             raise Exceptions.invalid_input_type_exception(field_name="transaction_category", expected_type=f"{(" ").join(expected_types)}")
         return self
+    
+class MonthlyReportOut(SQLModel):
+    monthly_spending: int 
+    monthly_categorywise_spending: Dict[str,Any]
