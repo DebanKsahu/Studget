@@ -31,7 +31,7 @@ async def add_transaction(data: TransactionIn, request: Request, session: AsyncS
     await session.commit()
     return APIResponse.success_response(message="Transaction Successfully added")
 
-@home_router.get("/get_transactions", response_model=APIResponse)
+@home_router.post("/get_transactions", response_model=APIResponse)
 async def get_transactions(request: Request, input_date: DateTimeIn, session: AsyncSession = Depends(DependencyContainer.get_session)):
     student_id = request.state.student_id
     student_info =  await session.get(StudentInDB,student_id)
