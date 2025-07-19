@@ -1,6 +1,7 @@
 from typing import Any, Callable, Coroutine
-from fastapi.routing import APIRoute
+
 import jwt
+from fastapi.routing import APIRoute
 from starlette.requests import Request
 from starlette.responses import Response
 

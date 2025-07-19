@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import select, extract
+from sqlmodel import extract, select
+
 from Database.Models.datetime_models import DateTimeIn
 from Database.Models.info_models import StudentInDB
 from Database.Models.transaction_models import TransactionIn, TransactionInDB

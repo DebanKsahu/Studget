@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     redis_username: str
     redis_password: str
     redis_port: int
+    google_api_key: str
 
     model_config = {
         "env_file": ".env"

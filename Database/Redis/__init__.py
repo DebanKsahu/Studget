@@ -1,5 +1,7 @@
 import redis.asyncio as redis
+
 from config import settings
+
 
 async def init_redis():
     redis_connection_pool = redis.ConnectionPool(

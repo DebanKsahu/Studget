@@ -1,12 +1,15 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-from Database import close_db, init_db
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from Auth.auth import auth_router
 from Dashboard.home import home_router
 from Dashboard.profile import profile_router
+from Database import close_db, init_db
 from Database.Redis import init_redis
+from Dashboard.chatbot import bot_router
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -28,3 +31,4 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(profile_router)
 app.include_router(home_router)
+app.include_router(bot_router)

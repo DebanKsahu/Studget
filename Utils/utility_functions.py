@@ -1,7 +1,10 @@
-from typing import Any
+from typing import Any, List
+
 import jwt
 from passlib.context import CryptContext
+
 from config import settings
+from Database.Models.transaction_models import TransactionInDB
 
 
 class PasswordUtils():
@@ -27,8 +30,20 @@ class JwtUtils():
     def decode_jwt(token: str) -> dict[str,Any]:
         payload: dict = jwt.decode(jwt=token,key=settings.secret_key,algorithms=[settings.algorithm])
         return payload
+    
+class DataFormattingUtils():
+
+    @staticmethod
+    def format_transaction_data(data: List[TransactionInDB]) -> str:
+        preprocessed_data = [
+            f"Transaction Amount = {transaction.transaction_amount}, Transaction Category = {transaction.transaction_category.value}, Transaction Date = {transaction.transaction_date}, Transaction Description = {transaction.transaction_description} "
+            for transaction in data
+        ]
+        result = ("\n").join(preprocessed_data)
+        return result
 
 class UtilsContainer:
 
     jwt_utils = JwtUtils()
     password_utils = PasswordUtils()
+    data_formatting_utils = DataFormattingUtils()

@@ -1,5 +1,7 @@
 from fastapi.security import OAuth2PasswordBearer
+
 from Utils.factory import async_session_factory
+
 
 class DatabaseDependency():
 

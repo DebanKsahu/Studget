@@ -1,10 +1,12 @@
 from datetime import date, datetime, timezone
 from typing import Any, Dict, Self
+
 from pydantic import model_validator
-from sqlmodel import SQLModel, Field, Column, BigInteger, ForeignKey
+from sqlmodel import BigInteger, Column, Field, ForeignKey, SQLModel
 
 from Utils.enum import TCategory
 from Utils.exceptions import Exceptions
+
 
 class TransactionInDB(SQLModel, table=True):
     transation_id: int | None = Field(default=None, sa_column=Column(BigInteger, primary_key=True))
