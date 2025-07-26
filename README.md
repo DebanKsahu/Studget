@@ -9,6 +9,9 @@
 - **User Authentication:** Secure signup and login with JWT-based authentication.
 - **Transaction Management:** Add, retrieve, and categorize expenses with ease.
 - **Monthly Reports:** Automated, cached monthly spending summaries and category-wise breakdowns.
+- **Spending Controls:** Set and monitor monthly spending limits with visual indicators (Green/Orange/Red).
+- **Category Tracking:** Track spending across different categories (Food, Shopping, Transportation, etc.).
+- **Trend Analysis:** Monitor spending trends with indicators (New, Increased, Decreased, Stable, Stopped).
 - **Conversational Chatbot:** AI-powered chatbot for querying and analyzing expenses using natural language.
 - **Intelligent Query Parsing:** Advanced NLU to extract structured data from user queries.
 - **Insightful Analytics:** Summarized spending patterns and actionable financial insights.
@@ -91,6 +94,8 @@ The project includes a [`render.yml`](render.yml ) for deployment on [Render](ht
 - **Home Dashboard**
   - `POST /home/add_transaction` — Add a new transaction
   - `POST /home/get_transactions` — Retrieve transactions by date/year/month
+  - `POST /home/set_monthly_limit/{monthly_limit}` — Set monthly spending limit
+  - `GET /home/get_spending_indicator` — Get current spending status indicator
 
 - **Chatbot**
   - `POST /bot/studgetbot` — Ask questions about your spending in natural language
