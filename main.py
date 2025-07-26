@@ -9,6 +9,7 @@ from Dashboard.profile import profile_router
 from Database import close_db, init_db
 from Database.Redis import init_redis
 from Dashboard.chatbot import bot_router
+from Dashboard.agent_routes import agent_router
 
 
 @asynccontextmanager
@@ -32,3 +33,4 @@ app.include_router(auth_router)
 app.include_router(profile_router)
 app.include_router(home_router)
 app.include_router(bot_router)
+app.include_router(agent_router)

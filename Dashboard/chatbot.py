@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from Dashboard.Agent.chatAgent import graph
+from Dashboard.Agent.chat_agent import graph
 from Database.Models.graph_states import InputState, OutputState, UserInput
 from Database.Models.info_models import StudentInDB
 from Utils.dependency_container import DependencyContainer

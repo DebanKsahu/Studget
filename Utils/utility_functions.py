@@ -3,6 +3,7 @@ from typing import Any, List
 import jwt
 from passlib.context import CryptContext
 
+from Utils.enum import TrendIndicator
 from config import settings
 from Database.Models.transaction_models import TransactionInDB
 
@@ -41,8 +42,32 @@ class DataFormattingUtils():
         ]
         result = ("\n").join(preprocessed_data)
         return result
+    
+    @staticmethod
+    def extract_transaction_description(data: List[TransactionInDB]) -> str:
+        preprocessed_data = [
+            f"Transaction Description = {transaction.transaction_description}"
+            for transaction in data
+        ]
+        result = ("\n").join(preprocessed_data)
+        return result
 
 class UtilsContainer:
+
+    @staticmethod
+    def get_trend(num: int,prev_spending: int,curr_spending: int) -> TrendIndicator:
+        match num:
+            case _ if num>0:
+                return TrendIndicator.INC
+            case 0:
+                return TrendIndicator.STABLE
+            case _ if num<0:
+                return TrendIndicator.DEC
+            case _ if prev_spending==0:
+                return TrendIndicator.NEW
+            case _ if curr_spending==0:
+                return TrendIndicator.STOP
+        return TrendIndicator.STOP
 
     jwt_utils = JwtUtils()
     password_utils = PasswordUtils()

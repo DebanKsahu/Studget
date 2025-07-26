@@ -7,3 +7,15 @@ class TCategory(str, Enum):
     TRANSPORTATION = "Transportation"
     ENTERTAINMENT = "Entertainment"
     HEALTH = "Health"
+
+class TrendIndicator(str, Enum):
+    NEW = "New"
+    INC = "Increased"
+    DEC = "Decreased"
+    STABLE = "Stable"
+    STOP = "Stopped"
+
+class SpendIndicator(str, Enum):
+    GREEN = "Green"
+    ORANGE = "Orange"
+    RED = "Red"
