@@ -2,8 +2,9 @@ from typing import Any, List
 
 import jwt
 from passlib.context import CryptContext
+from redis.asyncio import Redis
 
-from Utils.enum import TrendIndicator
+from Utils.enum import TCategory, TrendIndicator
 from config import settings
 from Database.Models.transaction_models import TransactionInDB
 
@@ -51,6 +52,21 @@ class DataFormattingUtils():
         ]
         result = ("\n").join(preprocessed_data)
         return result
+    
+class TransactionsUtils():
+
+    @staticmethod
+    async def update_cached_monthly_report(redis: Redis, student_id: int, new_amount: int, new_category: TCategory) -> None:
+        cached_monthly_total = await redis.get(f"student_id:{student_id}:monthly_total")
+        cached_monthly_report_dict = await redis.hgetall(f"student_id:{student_id}") # type: ignore
+        if cached_monthly_total is not None:
+            await redis.set(f"student_id:{student_id}:monthly_total",cached_monthly_total+new_amount)
+            await redis.expire(f"student_id:{student_id}:monthly_total",3600)
+        if cached_monthly_report_dict is not None:
+            cached_monthly_report_dict[f"{student_id}:{new_category.value}"] = cached_monthly_report_dict.get(f"{student_id}:{new_category.value}",0) + new_amount
+            cached_monthly_report_dict["cached_monthly_spending"] = cached_monthly_report_dict.get("cached_monthly_spending",0) + new_amount
+            await redis.hset(f"student_id:{student_id}",cached_monthly_report_dict) # type: ignore
+            await redis.expire(f"student_id:{student_id}",3600)
 
 class UtilsContainer:
 
@@ -72,3 +88,4 @@ class UtilsContainer:
     jwt_utils = JwtUtils()
     password_utils = PasswordUtils()
     data_formatting_utils = DataFormattingUtils()
+    transactions_utils = TransactionsUtils()

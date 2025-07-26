@@ -54,7 +54,7 @@ async def get_monthly_report(request: Request, session: AsyncSession = Depends(D
             f"student_id:{student_id}",
             mapping = in_memory_mapp,
         )
-        await redis.expire(f"student_id:{student_id}",70)
+        await redis.expire(f"student_id:{student_id}",3600)
     student_monthly_report_dict = await redis.hgetall(f"student_id:{student_id}")
     cached_monthly_spending = student_monthly_report_dict["cached_monthly_spending"]
     student_monthly_report_dict.pop("cached_monthly_spending")
