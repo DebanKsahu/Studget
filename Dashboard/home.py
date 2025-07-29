@@ -98,9 +98,9 @@ async def get_spending_indicator(request: Request, session: AsyncSession = Depen
     cached_monthly_total = int(cached_monthly_total)
     if cached_monthly_limit is None:
         cached_monthly_limit = 5000
-    if cached_monthly_total>=(cached_monthly_limit + 0.5*cached_monthly_limit):
+    if cached_monthly_total>=(int(cached_monthly_limit) + 0.5*int(cached_monthly_limit)):
         spending_indicator = SpendIndicator.RED
-    elif cached_monthly_total>cached_monthly_limit:
+    elif cached_monthly_total>int(cached_monthly_limit):
         spending_indicator = SpendIndicator.ORANGE
     return APIResponse.success_response(data={"spending_indicator": spending_indicator}, message="Indicator successfully retrieved")
     
