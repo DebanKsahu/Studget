@@ -75,6 +75,19 @@ async def set_monthly_limit(monthly_limit: int, request: Request, session: Async
     await redis.set(f"student_id:{student_id}:monthly_limit",monthly_limit) 
     return APIResponse.success_response(message="Monthly limit successfully updated")
 
+@home_router.get("/get_monthly_limit")
+async def get_monthly_limit(request: Request, session: AsyncSession = Depends(DependencyContainer.get_session)):
+    student_id = request.state.student_id
+    student_info =  await session.get(StudentInDB,student_id)
+    redis = request.app.state.redis_client
+    if student_info is None:
+        raise Exceptions.item_not_found_exception(item_name="Student") 
+    result = await redis.get(f"student_id:{student_id}:monthly_limit")
+    if result is None:
+        result = 5000
+        await redis.set(f"student_id:{student_id}:monthly_limit",5000) 
+    return APIResponse.success_response(data = {"monthly_limit": result}, message="Monthly Limit successfullt retrieved")
+
 @home_router.get("/get_spending_indicator", response_model=APIResponse)
 async def get_spending_indicator(request: Request, session: AsyncSession = Depends(DependencyContainer.get_session)):
     student_id = request.state.student_id

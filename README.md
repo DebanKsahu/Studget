@@ -83,24 +83,31 @@ The project includes a [`render.yml`](render.yml ) for deployment on [Render](ht
 
 ## API Endpoints / Functionality Overview
 
-- **Authentication**
-  - `POST /auth/login` — User login
-  - `POST /auth/signup` — User registration
+All endpoints return a standardized `APIResponse` format with consistent error handling.
 
-- **Profile**
-  - `GET /profile/student_profile` — Get student profile
-  - `GET /profile/monthly_report` — Get monthly spending report
+### Authentication API
+- `POST /auth/login` — User authentication with JWT token response
+- `POST /auth/signup` — New user registration
 
-- **Home Dashboard**
-  - `POST /home/add_transaction` — Add a new transaction
-  - `POST /home/get_transactions` — Retrieve transactions by date/year/month
-  - `POST /home/set_monthly_limit/{monthly_limit}` — Set monthly spending limit
-  - `GET /home/get_spending_indicator` — Get current spending status indicator
+### Profile API
+- `GET /profile/student_profile` — Retrieve user profile information
+- `GET /profile/monthly_report` — Get detailed monthly spending analysis
 
-- **Chatbot**
-  - `POST /bot/studgetbot` — Ask questions about your spending in natural language
+### Home Dashboard API
+- Transaction Management:
+  - `POST /home/add_transaction` — Record a new expense transaction
+  - `POST /home/get_transactions` — Fetch transactions with date-based filtering
 
-All endpoints return a standardized API response format.
+- Spending Controls:
+  - `POST /home/set_monthly_limit/{monthly_limit}` — Configure monthly spending threshold
+  - `GET /home/get_monthly_limit` — Retrieve current monthly spending limit
+  - `GET /home/get_spending_indicator` — Get spending status (Green/Orange/Red)
+
+### AI and Analytics API
+- Chatbot Interface:
+  - `POST /bot/studgetbot` — Natural language interface for expense queries
+- Automated Analysis:
+  - `GET /agent/prev_month_summary` — AI-generated previous month spending summary
 
 ## Folder Structure
 
