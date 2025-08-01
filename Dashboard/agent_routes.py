@@ -62,9 +62,6 @@ async def get_summarize_report(request: Request, session: AsyncSession = Depends
         month2_transactions=month_1_transactions
     )
     agent_response = await summarize_graph.ainvoke(input = agent_input)
-    print()
-    print("Agent Response", agent_response)
-    print()
     final_result = FinalOutputState(
         executive_summary=agent_response.get("executive_summary",""),
         key_observations=agent_response.get("key_observations",[""]),
@@ -73,6 +70,6 @@ async def get_summarize_report(request: Request, session: AsyncSession = Depends
         spending_to_watch=agent_response.get("spending_to_watch",""),
         transaction_report=agent_response.get("transaction_report","")
     )
-    # await redis.setex(f"summary:{student_id}",value=final_result.model_dump_json(),time=3600)
+    await redis.setex(f"summary:{student_id}",value=final_result.model_dump_json(),time=3600)
     return APIResponse.success_response(data = final_result, message="Summary Successfully Created")
     

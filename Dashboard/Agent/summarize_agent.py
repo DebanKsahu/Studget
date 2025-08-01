@@ -58,6 +58,7 @@ async def category_mapping(state: SummarizeAgentInputState) -> SummarizeAgentInt
             }
         )
         month_2_categories = OutputFormatter.model_validate(llm_response)
+
     final_transaction_report = defaultdict(lambda : default_value())
     if state.month1_transactions is not None and month_1_categories is not None and month_2_categories is not None:
         for index in range(len(state.month1_transactions)):
@@ -65,7 +66,9 @@ async def category_mapping(state: SummarizeAgentInputState) -> SummarizeAgentInt
             final_transaction_report[month_1_categories.categories[index]]["transaction_count_previous_to_previous_month"]+=1
             final_transaction_report[month_2_categories.categories[index]]["trend_indicator"] = TrendIndicator.STOP
             final_transaction_report[month_2_categories.categories[index]]["percentage_change"] = -100
-    if state.month2_transactions is not None and month_1_categories is not None and month_2_categories is not None:
+    if state.month2_transactions is not None and month_2_categories is not None:
+        if month_1_categories is None:
+            month_1_categories = month_2_categories
         for index in range(len(state.month2_transactions)):
             final_transaction_report[month_2_categories.categories[index]]["previous_month_spending"]+=state.month2_transactions[index].transaction_amount
             final_transaction_report[month_2_categories.categories[index]]["transaction_count_previous_month"]+=1
@@ -82,9 +85,6 @@ async def category_mapping(state: SummarizeAgentInputState) -> SummarizeAgentInt
             if (final_transaction_report[month_2_categories.categories[index]]["percentage_change"]>50.00):
                 final_transaction_report[month_2_categories.categories[index]]["significance_flag"] = True
 
-    print()
-    print("First Agent Output",final_transaction_report)
-    print()
     return SummarizeAgentIntermediateState(
         transaction_report=final_transaction_report
     )
@@ -92,7 +92,7 @@ async def category_mapping(state: SummarizeAgentInputState) -> SummarizeAgentInt
 async def summarize_spending(state: SummarizeAgentIntermediateState) -> FinalOutputState:
     gemini_llm_with_structured_output = gemini_llm.with_structured_output(SummarizeAgentOutputState)
     summarize_chain = (summary_making_prompt_template | gemini_llm_with_structured_output)
-    formatted_category_data = [{key:value} for key,value in state.transaction_report]
+    formatted_category_data = [{key:value} for key,value in state.transaction_report.items()]
     llm_response = await summarize_chain.ainvoke(
         {
             "category_data": json.dumps(formatted_category_data, indent=2)
@@ -118,6 +118,7 @@ graph_builder.add_node("category_mapping",category_mapping)
 graph_builder.add_node("summarize_spending",summarize_spending)
 
 graph_builder.add_edge(START,"category_mapping")
+graph_builder.add_edge("category_mapping","summarize_spending")
 graph_builder.add_edge("summarize_spending",END)
 
 summarize_graph = graph_builder.compile()

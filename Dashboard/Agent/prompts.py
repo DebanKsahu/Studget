@@ -179,7 +179,7 @@ Healthians Full Body Checkup
 Rapido Ride - Work Commute
 </Data>
 <Output>
-{
+{{
 "Amazon Fresh"
 "Pizza"
 "Travel - Online"
@@ -205,7 +205,7 @@ Rapido Ride - Work Commute
 "Google One"
 "Coffee"
 "Other"
-}
+}}
 </Output>
 </Examples>
 
@@ -241,7 +241,7 @@ If no input data provided or input data is blank then return in same output form
 <Examples>
 <Input Data>
 [
-  {
+  {{
     "category_name": "Dining Out",
     "previous_month_spending": 150.25,
     "previous_to_previous_month_spending": 320.80,
@@ -252,8 +252,8 @@ If no input data provided or input data is blank then return in same output form
     "transaction_count_previous_month": 5,
     "transaction_count_previous_to_previous_month": 10,
     "top_transactions_current":
-  },
-  {
+  }},
+  {{
     "category_name": "Travel",
     "previous_month_spending": 850.00,
     "previous_to_previous_month_spending": 0.00,
@@ -264,8 +264,8 @@ If no input data provided or input data is blank then return in same output form
     "transaction_count_previous_month": 2,
     "transaction_count_previous_to_previous_month": 0,
     "top_transactions_current":
-  },
-  {
+  }},
+  {{
     "category_name": "Utilities",
     "previous_month_spending": 125.50,
     "previous_to_previous_month_spending": 122.00,
@@ -276,17 +276,17 @@ If no input data provided or input data is blank then return in same output form
     "transaction_count_previous_month": 2,
     "transaction_count_previous_to_previous_month": 2,
     "top_transactions_current":
-  }
+  }}
 ]
 </Input Data>
 <Output>
-{
+{{
   "executive_summary": "This month saw a significant shift in your spending, with a large new expense in Travel and a major decrease in Dining Out. Your overall spending increased, driven primarily by the new travel costs.",
   "key_observations":,
   "notable_changes": "The biggest story this month was the introduction of Travel spending, which included a $650 charge from Delta Airlines. At the same time, you did a great job reducing your Dining Out costs, which fell by $170. Your Grocery bill saw a moderate increase of $70.50, with your largest purchase being $105.20 at Whole Foods.",
   "new_spending_areas": "Travel is a new area of spending for you this month, totaling $850. This was split between flights and accommodation.",
   "spending_to_watch": "While your savings on dining out were impressive, it's a good idea to keep an eye on the Grocery category. It saw a 15.6'%' increase, which could be a new trend to watch in the coming months."
-}
+}}
 </Output>
 </Examples>
 <Input Data>
