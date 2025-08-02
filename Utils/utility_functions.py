@@ -1,12 +1,16 @@
+from collections import defaultdict
+from datetime import datetime, timezone
 from typing import Any, List
 
 import jwt
 from passlib.context import CryptContext
 from redis.asyncio import Redis
+from sqlmodel import extract, select
 
-from Utils.enum import TCategory, TrendIndicator
 from config import settings
 from Database.Models.transaction_models import TransactionInDB
+from Utils.enum import TCategory, TrendIndicator
+from Utils.factory import async_session_factory
 
 
 class PasswordUtils():
@@ -59,9 +63,27 @@ class TransactionsUtils():
     async def update_cached_monthly_report(redis: Redis, student_id: int, new_amount: int, new_category: TCategory) -> None:
         cached_monthly_total = await redis.get(f"student_id:{student_id}:monthly_total")
         cached_monthly_report_dict = await redis.hgetall(f"student_id:{student_id}") # type: ignore
-        if cached_monthly_total is not None:
+        if cached_monthly_total is not None and cached_monthly_report_dict is not None:
             await redis.set(f"student_id:{student_id}:monthly_total",cached_monthly_total+new_amount)
             await redis.expire(f"student_id:{student_id}:monthly_total",3600)
+        else:
+            async with async_session_factory() as session:
+                statement = select(TransactionInDB).where(
+                    TransactionInDB.student_id==student_id,
+                    extract("month",TransactionInDB.transaction_date)==datetime.now(timezone.utc).month
+                    )
+                transactions = list((await session.execute(statement)).scalars())
+                monthly_total = 0
+                monthly_report_dict = defaultdict(int)
+                for transaction in transactions:
+                    monthly_total+=transaction.transaction_amount
+                    monthly_report_dict[f"{student_id}:{transaction.transaction_category.value}"]+=transaction.transaction_amount
+                monthly_report_dict["cached_monthly_spending"]=monthly_total
+                cached_monthly_report_dict = monthly_report_dict
+                monthly_total+=new_amount
+                await redis.set(f"student_id:{student_id}:monthly_total",monthly_total)
+                await redis.expire(f"student_id:{student_id}:monthly_total",3600)
+                
         if cached_monthly_report_dict is not None:
             cached_monthly_report_dict[f"{student_id}:{new_category.value}"] = cached_monthly_report_dict.get(f"{student_id}:{new_category.value}",0) + new_amount
             cached_monthly_report_dict["cached_monthly_spending"] = cached_monthly_report_dict.get("cached_monthly_spending",0) + new_amount
