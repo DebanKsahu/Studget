@@ -134,6 +134,22 @@ All endpoints return a standardized `APIResponse` format with consistent error h
 - **[`main.py`](main.py )**: Application startup, middleware, and router registration.
 - **[`config.py`](config.py )**: Centralized configuration using environment variables.
 
+## Architecture
+
+The initial architecture and dashboard structure for Studget were planned visually to clarify the project’s flow and modular design. Below are the diagrams that guided the early development:
+
+### Agent Flow
+
+![Agent Flow](Images/Agent%20Flow.png)
+
+This diagram outlines the flow of the AI agent, detailing how user queries are processed and insights are generated.
+
+### Dashboard Structure
+
+![Studget Structure of Dashboard](Images/Studget%20Structure%20of%20Dashboard.png)
+
+This diagram illustrates the modular structure of the dashboard, showing the separation of concerns between authentication, transaction management, analytics, and AI-powered features.
+
 ## Screenshots / Demos
 
 Currently Not available.
