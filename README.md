@@ -152,4 +152,20 @@ This diagram illustrates the modular structure of the dashboard, showing the sep
 
 ## Screenshots / Demos
 
-Currently Not available.
+Below are some demo screenshots of Studget in action:
+
+<div align="center">
+
+![Studget Demo 1](Images/Project%20Demo%20Images/Studget-1.jpg)
+*Login Overview*
+
+![Studget Demo 2](Images/Project%20Demo%20Images/Studget-2.png)
+*AI-Powered Insights*
+
+![Studget Demo 3](Images/Project%20Demo%20Images/Studget-3.png)
+*Spending Analysis*
+
+![Studget Demo 4](Images/Project%20Demo%20Images/Studget-4.png)
+*Transaction Management*
+
+</div>
