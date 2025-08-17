@@ -81,6 +81,52 @@ See [pyproject.toml](pyproject.toml) for the full list of dependencies.
 
 The project includes a [`render.yml`](render.yml ) for deployment on [Render](https://render.com/).
 
+## Running with Docker
+
+### Prerequisites
+- Docker installed on your system
+- Docker Compose (optional, for easier management)
+
+### Building and Running
+
+1. Build the Docker image:
+```bash
+docker build -t studget .
+```
+
+2. Run the container:
+```bash
+docker run -d -p 8000:8000 studget
+```
+
+The API will be available at `http://localhost:8000`
+
+### Using Docker Compose (Alternative)
+
+1. Create a docker-compose.yml file:
+```yaml
+version: '3.8'
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=your_database_url_here
+```
+
+2. Run with Docker Compose:
+```bash
+docker-compose up -d
+```
+
+To stop the container:
+```bash
+docker-compose down
+```
+
+Note: Make sure to update any environment variables or configuration settings as needed for your deployment.
+
 ## API Endpoints / Functionality Overview
 
 All endpoints return a standardized `APIResponse` format with consistent error handling.
